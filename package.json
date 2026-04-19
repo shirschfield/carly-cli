@@ -1,0 +1,61 @@
+{
+  "name": "carly-ai",
+  "version": "0.2.1",
+  "description": "Agent-native CLI and MCP server for Carly — the AI scheduling assistant. Read bookings, booking pages, event types, and slots from any MCP-compatible client or shell.",
+  "type": "module",
+  "bin": {
+    "carly": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./mcp": "./dist/mcp.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/shirschfield/carly-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shirschfield/carly-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shirschfield/carly-cli/issues"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/index.ts",
+    "dev:mcp": "tsx src/mcp.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.3.0",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "commander": "^14.0.3",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "carly",
+    "carly-ai",
+    "cli",
+    "mcp",
+    "scheduling",
+    "calendar",
+    "bookings",
+    "agent",
+    "ai"
+  ],
+  "license": "MIT"
+}
