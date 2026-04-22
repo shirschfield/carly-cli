@@ -28,7 +28,7 @@ npm link       # exposes `carly` on PATH
 ```bash
 carly signup                  # opens Google OAuth (use --with microsoft for Outlook)
 # ... approve in browser, then:
-carly login                   # paste the API key you minted at /advanced
+carly login                   # paste the API key you minted at /booking-pages (expand "Generate API key")
 ```
 
 **Already have a Carly account?**
@@ -68,7 +68,7 @@ Resolved in priority order:
 
 Base URL defaults to `https://dashboard.carlyassistant.com` and can be overridden with `--api-base-url` or `CARLY_API_BASE_URL`.
 
-Mint a key at `<base-url>/advanced` → API Keys → Generate key. Scopes are enforced server-side; see [Scopes](#scopes) below.
+Mint a key at `<base-url>/booking-pages` → expand **Generate API key** (under "Use Carly from your terminal or AI agent"). Scopes are enforced server-side; see [Scopes](#scopes) below.
 
 ## MCP server setup
 

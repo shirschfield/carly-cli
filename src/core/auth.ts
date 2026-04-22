@@ -34,7 +34,7 @@ export async function resolveAuth(opts: {
         '  1. Run: carly login\n' +
         '  2. Set env var: export CARLY_API_KEY=<key>\n' +
         '  3. Pass flag: carly --api-key <key> <command>\n\n' +
-        `Mint a key at ${DEFAULT_API_BASE_URL}/advanced (Advanced tab → API Keys → Generate key).`,
+        `Mint a key at ${DEFAULT_API_BASE_URL}/booking-pages (expand "Generate API key" under "Use Carly from your terminal or AI agent").`,
     );
   }
 

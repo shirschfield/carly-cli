@@ -2,6 +2,9 @@ import type { Command } from 'commander';
 import { CarlyClient } from '../../core/client.js';
 import { saveConfig, loadConfig, getConfigPath } from '../../core/config.js';
 import { DEFAULT_API_BASE_URL } from '../../core/auth.js';
+import { openInBrowser } from '../../core/browser.js';
+
+const KEY_MINT_PATH = '/booking-pages?from_cli=true';
 
 export function registerLoginCommand(program: Command): void {
   program
@@ -16,18 +19,37 @@ export function registerLoginCommand(program: Command): void {
         if (process.env.CARLY_API_KEY) {
           apiKey = process.env.CARLY_API_KEY;
         } else {
-          console.error(`Mint a key at ${baseUrl}/advanced (Advanced tab → API Keys → Generate key).`);
+          const mintUrl = `${baseUrl}${KEY_MINT_PATH}`;
+          const opened = openInBrowser(mintUrl);
+          if (opened) {
+            console.error(`Opened your browser to mint an API key: ${mintUrl}`);
+          } else {
+            console.error(`Open this URL to mint an API key: ${mintUrl}`);
+          }
+          console.error('On the booking-pages page, expand "Generate API key" under "Use Carly from your terminal or AI agent".');
+
+          if (!process.stdin.isTTY) {
+            console.error('');
+            console.error('Once you have the key, re-run:');
+            console.error('  carly login --api-key <paste-key>');
+            console.error('  or: CARLY_API_KEY=<paste-key> carly login');
+            process.exit(1);
+          }
           try {
             const { password } = await import('@inquirer/prompts');
             apiKey = await password({
               message: 'Paste your Carly API key (carly_live_…):',
               mask: '*',
             });
-          } catch {
+          } catch (err: any) {
+            if (err?.name === 'ExitPromptError') {
+              console.error('Login cancelled.');
+              process.exit(130);
+            }
             console.error(
-              'Interactive prompts not available. Use:\n' +
-                '  CARLY_API_KEY=<key> carly login\n' +
-                '  or: carly --api-key <key> login',
+              `Could not read API key from prompt (${err?.message ?? err}). Instead, run:\n` +
+                '  carly login --api-key <paste-key>\n' +
+                '  or: CARLY_API_KEY=<paste-key> carly login',
             );
             process.exit(1);
           }
@@ -50,7 +72,7 @@ export function registerLoginCommand(program: Command): void {
       } catch (err: any) {
         const status = err?.statusCode ?? '';
         const help = status === 401 || status === 403
-          ? `\nGet a new key at ${baseUrl}/advanced`
+          ? `\nGet a new key at ${baseUrl}/booking-pages (expand "Generate API key")`
           : '';
         console.error(`Authentication failed: ${err?.message ?? err}${help}`);
         process.exit(1);
